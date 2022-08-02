@@ -5,8 +5,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 st.set_option('deprecation.showfileUploaderEncoding', False)
-model = pickle.load(open('SVM_Ads.pkl', 'rb')) 
-model_randomforest = pickle.load(open('randomforest.pkl', 'rb')) 
+# Load the pickled model 
+model_randomforest = pickle.load(open('randomforest.pkl', 'rb'))
+model = pickle.load(open('SVM_Ads.pkl', 'rb'))
 dataset= pd.read_csv('Social_Network_Ads.csv')
 X = dataset.iloc[:, [2, 3]].values
 from sklearn.preprocessing import StandardScaler
@@ -46,10 +47,11 @@ def main():
     st.markdown(html_temp,unsafe_allow_html=True)
     st.header("Item Purchase Prediction using SVM Algorithm")
     UserID = st.text_input("UserID","")
-    Gender = st.selectbox(
-    "Gender",
-    ("Male", "Female", "Others")
-    )
+    Gender = st.selectbox("Gender",("Male", "Female", "Others"))
+    if Gender=='Male':
+      Gender = 1
+    else:
+      Gender = 0
     
     Age = st.number_input('Insert a Age',18,60)
     #Age = st.text_input("Age","Type Here")
@@ -57,10 +59,10 @@ def main():
     resul=""
     if st.button("SVM Prediction"):
       result=predict_note_authentication(UserID, Gender,Age,EstimatedSalary)
-      st.success('SVM Model has predicted {}'.format(result))
+      st.success('SVM Model has predicted, {}'.format(result))
     if st.button("Random Forest Prediction"):
       result=predict_random(UserID, Gender,Age,EstimatedSalary)
-      st.success('Random forest Model  has predicted {}'.format(result))  
+      st.success('Random forest Model  has predicted, {}'.format(result))  
     if st.button("About"):
       st.header("Developed by Rohan Kandpal")
       st.subheader("Student , Department of Computer Engineering")
